@@ -39,7 +39,7 @@ jobs:
 
     strategy:
       matrix:
-        image: ${{ fromJson(needs.generate_list.outputs.matrix) }}
+        image: [${{ needs.generate_list.outputs.matrix }}]
     
     steps:
       - name: Checkout Push to Registry action
