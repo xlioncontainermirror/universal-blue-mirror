@@ -29,8 +29,9 @@ jobs:
         shell: bash
         run: |
           MATRIX_IMAGES=$(ls matrixs -1 | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
-          echo "Generated matrix list: [$MATRIX_IMAGES]"  # 檢查列表格式
-          echo "matrix=[$MATRIX_IMAGES]" >> $GITHUB_ENV  # 使用環境文件方式設置輸出
+          MATRIX_JSON="[$MATRIX_IMAGES]"
+          echo "Generated matrix list: $MATRIX_JSON"
+          echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
 
   download_push:
     name: Work
