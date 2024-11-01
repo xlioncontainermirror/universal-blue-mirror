@@ -21,6 +21,8 @@ jobs:
   generate_list:
     name: Genarate list for work
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.generate.outputs.matrix }}
     steps:
       - name: Checkout Push to Registry action
         uses: actions/checkout@v4
@@ -28,10 +30,13 @@ jobs:
       - name: Genarate list
         shell: bash
         run: |
-          MATRIX_IMAGES=$(ls matrixs -1 | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
-          MATRIX_JSON="[$MATRIX_IMAGES]"
-          echo "Generated matrix list: $MATRIX_JSON"
-          echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
+          MATRIX_IMAGES=$(ls matrixs -1 | jq -R . | jq -s .)
+          echo "Generated matrix list: $MATRIX_IMAGES"
+          echo "matrix=$MATRIX_IMAGES" >> $GITHUB_OUTPUT
+      
+      - name: Debug output
+        run: |
+          echo "Output matrix: ${{ steps.generate.outputs.matrix }}"
 
   download_push:
     name: Work
