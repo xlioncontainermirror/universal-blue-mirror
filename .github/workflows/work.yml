@@ -28,12 +28,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Genarate list
+        id: generate
         shell: bash
         run: |
           MATRIX_IMAGES=$(ls matrixs -1 | jq -R . | jq -s .)
           echo "Generated matrix list: $MATRIX_IMAGES"
-          echo "matrix=$MATRIX_IMAGES" >> $GITHUB_OUTPUT
-      
+          echo "matrix<<MATRIX_END" >> $GITHUB_OUTPUT
+          echo "$MATRIX_IMAGES" >> $GITHUB_OUTPUT
+          echo "MATRIX_END" >> $GITHUB_OUTPUT
+          
       - name: Debug output
         run: |
           echo "Output matrix: ${{ steps.generate.outputs.matrix }}"
