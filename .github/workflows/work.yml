@@ -28,9 +28,9 @@ jobs:
       - name: Genarate list
         shell: bash
         run: |
-          MATRIX_IMAGES=$(ls matrixs -1 | tr '\n' ' ')
-          echo "Generated matrix list: $MATRIX_IMAGES"
-          echo "::set-output name=matrix::$MATRIX_IMAGES"
+          MATRIX_IMAGES=$(ls matrixs -1 | tr '\n' ',' )
+          echo "Generated matrix list: $MATRIX_IMAGES"  # 檢查列表格式
+          echo "MATRIX_IMAGES=$MATRIX_IMAGES" >> $GITHUB_ENV
 
   download_push:
     name: Work
@@ -39,7 +39,7 @@ jobs:
 
     strategy:
       matrix:
-        image: ${{ needs.generate_list.outputs.matrix }}
+        image: ["${{ env.MATRIX_IMAGES }}"]
     
     steps:
       - name: Checkout Push to Registry action
