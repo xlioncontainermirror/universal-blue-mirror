@@ -1,1 +1,1 @@
-FROM ghcr.io/ublue-os/aurora-nvidia-dx:stable
+FROM ghcr.io/ublue-os/aurora-dx-nvidia:stable
