@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         image: ${{ fromJson(needs.generate_list.outputs.matrix) }}
-      continue-on-error: true
+      fail-fast: false
     
     steps:
       - name: Checkout Push to Registry action
