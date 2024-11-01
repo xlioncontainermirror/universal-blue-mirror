@@ -25,13 +25,31 @@ jobs:
     strategy:
       matrix:
         image: [
+          cosmic-silverblue-latest,
           bazzite-stable,
-          bazzite-deck-stable
+          bazzite-deck-stable,
+          bazzite-nvidia-stable
         ]
     
     steps:
       - name: Checkout Push to Registry action
         uses: actions/checkout@v4
+
+      - uses: sigstore/cosign-installer@v3.7.0
+
+      - name: Verify ${{ matrix.image }}
+        shell: bash
+        run: |
+          set -oue pipefail
+          echo "---Grep image name---"
+          containerfile_path="matrixs/${{ matrix.image }}/Containerfile"
+          image=$(grep -i '^FROM' "$containerfile_path" | awk '{print $2}')
+          echo "Image: "${image}""
+          echo ""
+          echo "Using Cosign to verify image..."
+          cosign verify \
+            --key https://raw.githubusercontent.com/ublue-os/bluefin/refs/heads/main/cosign.pub \
+            "${image}"
 
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@v7
@@ -119,10 +137,6 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           extra-args: |
             --compression-format=zstd
-
-      # Sign container
-      - uses: sigstore/cosign-installer@v3.7.0
-        if: github.event_name != 'pull_request'
 
       - name: Sign container image
         if: github.event_name != 'pull_request'
