@@ -19,7 +19,7 @@ env:
 
 jobs:
   download_push:
-    name: Download and push image
+    name: Work
     runs-on: ubuntu-24.04
 
     strategy:
