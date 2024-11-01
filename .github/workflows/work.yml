@@ -18,18 +18,28 @@ env:
   IMAGE_REGISTRY: "registry.hub.docker.com/${{ github.repository_owner }}"
 
 jobs:
+  generate_list:
+    name: Genarate list for work
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Push to Registry action
+        uses: actions/checkout@v4
+
+      - name: Genarate list
+        shell: bash
+        run: |
+          MATRIX_IMAGES=$(ls matrixs -1 | paste -sd ',' -)
+          echo "matrix=[\"$MATRIX_IMAGES\"]" >> $GITHUB_ENV
+          echo "::set-output name=matrix::[$MATRIX_IMAGES]"
+
   download_push:
     name: Work
+    needs: generate_list
     runs-on: ubuntu-24.04
 
     strategy:
       matrix:
-        image: [
-          cosmic-silverblue-latest,
-          bazzite-stable,
-          bazzite-deck-stable,
-          bazzite-nvidia-stable
-        ]
+        image: ${{ fromJson(needs.generate_list.outputs.matrix) }}
     
     steps:
       - name: Checkout Push to Registry action
