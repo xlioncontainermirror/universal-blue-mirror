@@ -75,6 +75,7 @@ jobs:
             "${image}"
 
       - name: Maximize build space
+        if: contains(${{ matrix.image }}, 'bazzite')
         uses: ublue-os/remove-unwanted-software@v7
 
       - name: Generate tags
