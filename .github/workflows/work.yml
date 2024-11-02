@@ -21,11 +21,6 @@
     generate_list:
       name: Genarate list for work
       runs-on: ubuntu-latest
-      permissions:
-        id-token: write
-        packages: write
-        contents: read
-        attestations: write
       outputs:
         matrix: ${{ steps.generate.outputs.matrix }}
       steps:
@@ -50,6 +45,12 @@
       name: Work
       needs: generate_list
       runs-on: ubuntu-24.04
+
+      permissions:
+        id-token: write
+        packages: write
+        contents: read
+        attestations: write
   
       strategy:
         matrix:
