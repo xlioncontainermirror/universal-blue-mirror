@@ -175,6 +175,7 @@
             COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
         
         - name: Attest
+          if: github.event_name != 'pull_request'
           uses: actions/attest-build-provenance@v1
           with:
             subject-name: docker.io/${{ github.repository_owner }}/${{ matrix.image }}
