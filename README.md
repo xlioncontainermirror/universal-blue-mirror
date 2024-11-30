@@ -11,12 +11,12 @@
 **Second**, copy and paste following command:
 
 ```bash
-rpm-ostree rebase ostree-unverified-image:registry:registry.hub.docker.com/xlioncontainermirror/
+sudo bootc switch registry.hub.docker.com/xlioncontainermirror/
 ```
 
 **Third**, [middle click me](./matrixs) to browse images you want, copy and paste folder name
 
-**Fourth**, copy and paste following command:
+**Fourth**, copy and paste following tag:
 
 ```bash
 :latest
@@ -26,14 +26,14 @@ At the end, you will get the command like this:
 
 
 ```bash
-rpm-ostree rebase ostree-unverified-image:registry:registry.hub.docker.com/xlioncontainermirror/bluefin-dx-stable:latest
+sudo bootc switch registry.hub.docker.com/xlioncontainermirror/bluefin-dx-stable:latest
 ```
 
 Copy and paste to terminal and run it. After done, reboot.
 
-### Rebase to verified
+### ~~Rebase to verified~~
 
-Run same command but replace `ostree-unverified-image` to `ostree-image-signed`.
+~~Run same command but replace `ostree-unverified-image` to `ostree-image-signed`.~~ Though it will not return error, but it actually doing nothing.
 
 ## How this repo works
 
