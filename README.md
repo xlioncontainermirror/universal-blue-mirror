@@ -2,6 +2,8 @@
 
 **Unofficial** mirror of Universal Blue, mirror to Docker Hub.
 
+[![Mirror to Docker Hub](https://github.com/xlioncontainermirror/universal-blue-mirror/actions/workflows/work.yml/badge.svg)](https://github.com/xlioncontainermirror/universal-blue-mirror/actions/workflows/work.yml)
+
 ## Get Started
 
 ### Rebase
