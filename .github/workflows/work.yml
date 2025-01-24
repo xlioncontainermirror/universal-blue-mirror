@@ -61,6 +61,11 @@
         - name: Checkout Push to Registry action
           uses: actions/checkout@v4
   
+        - name: Install Podman, buildah
+          uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+          with:
+            packages: podman, buildah
+
         - uses: sigstore/cosign-installer@v3.7.0
   
         - name: Verify ${{ matrix.image }}
