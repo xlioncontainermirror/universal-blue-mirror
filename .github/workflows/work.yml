@@ -84,6 +84,7 @@
   
         - name: Maximize build space
           if: contains( matrix.image , 'bazzite')
+          continue-on-error: true
           uses: ublue-os/remove-unwanted-software@v8
   
         - name: Generate tags
@@ -155,7 +156,7 @@
           with:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.DOCKER_PASSWORD }}
-            registry: docker.io
+            registry: registry.hub.docker.com
 
         - name: Push Image to Docker Hub
           uses: redhat-actions/push-to-registry@v2
