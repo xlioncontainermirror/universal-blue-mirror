@@ -15,7 +15,8 @@
   
   env:
     IMAGE_DESC: "Unofficial mirror of Universal Blue, mirror to Docker Hub."
-    IMAGE_REGISTRY: "registry.hub.docker.com/${{ github.repository_owner }}"
+    #IMAGE_REGISTRY: "registry.hub.docker.com/${{ github.repository_owner }}"
+    IMAGE_REGISTRY: "docker.io/${{ github.repository_owner }}"
   
   jobs:
     generate_list:
@@ -156,7 +157,7 @@
           with:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.DOCKER_PASSWORD }}
-            registry: registry.hub.docker.com
+            registry: docker.io
 
         - name: Push Image to Docker Hub
           uses: redhat-actions/push-to-registry@v2
