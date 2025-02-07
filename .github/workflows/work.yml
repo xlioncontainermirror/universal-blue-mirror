@@ -114,7 +114,7 @@
             containerfiles: |
               matrixs/${{ matrix.image }}/Containerfile
             image: ${{ matrix.image }}
-            tags: ${{ steps.meta-main.outputs.tags }}
+            tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
             arch: amd64
             oci: true
