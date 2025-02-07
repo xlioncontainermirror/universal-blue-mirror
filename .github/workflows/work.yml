@@ -97,7 +97,7 @@
           id: meta
           with:
             images: |
-              ${{ env.IMAGE_REGISTRY }}${{ matrix.image }}
+              ${{ env.IMAGE_REGISTRY }}
             tags: |
               type=raw,value={{date 'YYYYMMDD'}},enable={{is_default_branch}}
               type=raw,value=latest,enable={{is_default_branch}}
