@@ -19,8 +19,11 @@
     IMAGE_REGISTRY: "docker.io/${{ github.repository_owner }}"
 
   concurrency:
-    group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.brand_name}}-${{ inputs.stream_name }}
+    group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.brand_name }}-${{ inputs.stream_name }}
     cancel-in-progress: true
+
+  permissions:
+    contents: read
 
   jobs:
     generate_list:
@@ -31,6 +34,8 @@
       steps:
         - name: Checkout
           uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+          with: 
+            persist-credentials: false
   
         - name: Genarate list
           id: generate
@@ -43,8 +48,10 @@
             echo "MATRIX_END" >> $GITHUB_OUTPUT
             
         - name: Debug output
+          env:
+            GENERATED_OUTPUT: ${{ steps.generate.outputs.matrix }}
           run: |
-            echo "Output matrix: ${{ steps.generate.outputs.matrix }}"
+            echo "Output matrix: ${GENERATED_OUTPUT}"
   
     download_push:
       name: Work
@@ -54,7 +61,6 @@
       permissions:
         id-token: write
         packages: write
-        contents: read
         attestations: write
   
       strategy:
@@ -65,6 +71,8 @@
       steps:
         - name: Checkout Push to Registry action
           uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+          with:
+            persist-credentials: false
   
         - name: Install Podman, buildah
           uses: awalsh128/cache-apt-pkgs-action@5902b33ae29014e6ca012c5d8025d4346556bd40 # v1.4.3
@@ -141,11 +149,15 @@
         - name: Sign container image
           if: github.event_name != 'pull_request'
           run: |
-            cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.IMAGE_REGISTRY }}/${{ steps.build_image.outputs.image }}@${TAGS} --registry-username='${{ github.repository_owner }}' --registry-password='${{ secrets.DOCKER_PASSWORD }}'
+            cosign sign -y --key env://COSIGN_PRIVATE_KEY ${IMAGE_REGISTRY}/${IMAGE_DIGEST}@${TAGS} --registry-username='${REGISTRY_USERNAME}' --registry-password='${REGISTRY_PASSWORD}'
           env:
             TAGS: ${{ steps.push.outputs.digest }}
             COSIGN_EXPERIMENTAL: false
             COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+            IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
+            IMAGE_DIGEST: ${{ steps.build_image.outputs.image }}
+            REGISTRY_USERNAME: ${{ github.repository_owner }}
+            REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         
         - name: Attest
           if: github.event_name != 'pull_request'
