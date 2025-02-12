@@ -149,7 +149,7 @@
         - name: Sign container image
           if: github.event_name != 'pull_request'
           run: |
-            cosign sign -y --key env://COSIGN_PRIVATE_KEY ${IMAGE_REGISTRY}/${IMAGE_DIGEST}@${TAGS} --registry-username='${REGISTRY_USERNAME}' --registry-password='${REGISTRY_PASSWORD}'
+            cosign sign -y --key env://COSIGN_PRIVATE_KEY ${IMAGE_REGISTRY}/${IMAGE_DIGEST}@${TAGS} --registry-username=${REGISTRY_USERNAME} --registry-password=${REGISTRY_PASSWORD}
           env:
             TAGS: ${{ steps.push.outputs.digest }}
             COSIGN_EXPERIMENTAL: false
