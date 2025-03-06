@@ -37,6 +37,11 @@
           with: 
             persist-credentials: false
   
+        - name: If PR, only keep 2 for test
+          if: github.event_name == 'pull_request'
+          run: |
+            find matrixs -mindepth 1 ! -name "bluefin-stable" ! -name "aurora-stable" ! -name "Containerfile" -exec rm -rf {} +
+
         - name: Genarate list
           id: generate
           shell: bash
