@@ -134,7 +134,7 @@
             password: ${{ secrets.DOCKER_PASSWORD }}
 
         - name: Push Image to Docker Hub
-          uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2.8
+          uses: redhat-actions/push-to-registry@94ade333c38ecc0e60e94785125d9a52ca423b37 # v3.0.0
           id: push
           env:
             REGISTRY_USER: ${{ github.repository_owner }}
