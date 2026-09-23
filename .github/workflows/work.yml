@@ -28,7 +28,7 @@
   jobs:
     generate_list:
       name: Genarate list for work
-      runs-on: ubuntu-24.04-arm
+      runs-on: ubuntu-26.04-arm
       outputs:
         matrix: ${{ steps.generate.outputs.matrix }}
       steps:
@@ -61,7 +61,7 @@
     download_push:
       name: Work
       needs: generate_list
-      runs-on: ubuntu-24.04-arm
+      runs-on: ubuntu-26.04-arm
 
       permissions:
         id-token: write
